@@ -1,23 +1,10 @@
 --[[ 
-    PREMIUM CYBERPUNK KEY SYSTEM 2026 - ENCRYPTED VERSION
-    Secure Luarmor Framework & Protected Bytecode Style
-    [MÃ HOÁ BẢO MẬT CAO - CHỐNG DECOMPILE]
+    PREMIUM CYBERPUNK KEY SYSTEM 2026 - OBFUSCATED VERSION
+    [SERVER KEY SYNC ONLY - PROTECTED EDITION]
 ]]
 
-local _0x3F4A = [===[
-\27\76\117\97\83\0\4\0\4\4\8\9\0\0\0\0\115\101\99\117\114\101\95\108\111\97\100\0\0\0\0\0\0\0\0\0\0\0\2\2\120\0\0\0\5\0\0\0\6\0\0\0\12\0\0\0\65\64\0\0\28\64\0\1\30\64\128\0\2\0\0\0\4\11\0\0\0\108\111\97\100\115\116\114\105\110\103\0\4\116\0\0\0\103\97\109\101\58\72\116\116\112\71\101\116\40\34\104\116\116\112\115\58\47\47\114\97\119\46\103\105\116\104\117\98\117\115\101\114\99\111\110\116\101\110\116\46\99\111\109\47\70\108\117\120\121\121\121\51\51\51\47\72\111\115\104\105\79\110\84\111\112\47\109\97\105\110\47\108\111\97\100\101\114\46\108\117\97\34\41\0\0\0\0
-]===]
-
-local function _0xDecoder(str)
-    local result = {}
-    for match in string.gmatch(str, "\\(%d+)") do
-        table.insert(result, string.char(tonumber(match)))
-    end
-    return table.concat(result)
-end
-
--- Đường dẫn cấu hình đã ẩn bằng mã hoá Hex escape
-local Config_URL = "\104\116\116\112\115\58\47\47\114\97\119\46\103\105\116\104\117\121\98\97\99\107\101\110\100\46\99\111\109\47\66\117\98\117\50\107\47\99\111\110\102\105\103\46\116\120\116\47\114\101\102\115\47\104\101\97\100\115\47\109\97\105\110\47\99\111\110\102\105\103\46\116\120\116"
+-- Toàn bộ URL cấu hình và Tên file đã được chuyển sang Bytecode Escape chống Spy
+local Config_URL = "\104\116\116\112\115\58\47\47\114\97\119\46\103\105\116\104\117\98\117\115\101\114\99\111\110\116\101\110\116\46\99\111\109\47\66\117\98\117\50\107\47\99\111\110\102\105\103\46\116\120\116\47\114\101\102\115\47\104\101\97\100\115\47\109\97\105\110\47\99\111\110\102\105\103\46\116\120\116"
 local File_Name = "\69\99\108\105\112\115\101\75\101\121\67\97\99\104\101\46\116\120\116"
 
 local HttpService = game:GetService("\72\116\116\112\83\101\114\118\105\99\101")
@@ -25,31 +12,49 @@ local TweenService = game:GetService("\84\119\101\101\110\83\101\114\118\105\99\
 local UserInputService = game:GetService("\85\115\101\114\73\110\112\117\116\83\101\114\118\105\99\101")
 
 local fetchedLink = "\104\116\116\112\115\58\47\47\102\117\110\108\105\110\107\46\105\111\47\80\117\95\115\50\119\99"
-local fetchedKey = "\118\105\101\116\110\97\109\55\54"
+local fetchedKey = nil 
 
-local success, response = pcall(function() return game:HttpGet(Config_URL) end)
+local success, response = pcall(function()
+    return game:HttpGet(Config_URL)
+end)
+
 if success and response then
     local lines = {}
-    for line in string.gmatch(response, "[^\r\n]+") do table.insert(lines, line) end
+    for line in string.gmatch(response, "[^\r\n]+") do
+        table.insert(lines, line)
+    end
     if lines[1] then fetchedLink = string.gsub(lines[1], "%s+", "") end
     if lines[2] then fetchedKey = string.gsub(lines[2], "%s+", "") end
 end
 
+---------------------------------------------------------
+-- ENCRYPTED MAIN EXECUTION FUNCTION
+---------------------------------------------------------
 local function ExecuteMainScript()
     local loadSuccess, err = pcall(function()
-        local raw_exec = loadstring or load
-        if raw_exec then
-            raw_exec("\108\111\97\100\115\116\114\105\110\103\40\103\97\109\101\58\72\116\116\112\71\101\116\40\34\104\116\116\112\115\58\47\47\114\97\119\46\103\105\116\104\117\98\117\115\101\114\99\111\110\116\101\110\116\46\99\111\109\47\70\108\117\120\121\121\121\51\51\51\47\72\111\115\104\105\79\110\84\111\112\47\109\97\105\110\47\108\111\97\100\101\114\46\108\117\97\34\41\41\40\41")()
-        end
+        -- Link nạp loader chính của Fluxyyy333 đã được ẩn hóa
+        local _main = "\104\116\116\112\115\58\47\47\114\97\119\46\103\105\116\104\117\98\117\115\101\114\99\111\110\116\101\110\116\46\99\111\109\47\70\108\117\120\121\121\121\51\51\51\47\72\111\115\104\105\79\110\84\111\112\47\109\97\105\110\47\108\111\97\100\101\114\46\108\117\97"
+        local env_load = loadstring or load
+        env_load(game:HttpGet(_main))()
     end)
-    if not loadSuccess then warn("\76\231\105\32\83\99\114\105\112\116\32\67\104\237\110\104\58\32" .. tostring(err)) end
+    
+    if not loadSuccess then
+        warn("\76\231\105\32\83\99\114\105\112\116\32\67\104\237\110\104\58\32" .. tostring(err))
+    end
 end
 
-if readfile and isfile and isfile(File_Name) then
+-- KIỂM TRA CHỨC NĂNG LƯU KEY TỰ ĐỘNG
+if fetchedKey and readfile and isfile and isfile(File_Name) then
     local savedKey = readfile(File_Name)
-    if savedKey == fetchedKey then ExecuteMainScript() return end
+    if savedKey == fetchedKey then
+        ExecuteMainScript()
+        return 
+    end
 end
 
+---------------------------------------------------------
+-- KHỞI TẠO GIAO DIỆN CHUẨN
+---------------------------------------------------------
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Name = "EclipseKeySystem_v3"
 ScreenGui.Parent = game:GetService("CoreGui")
@@ -153,6 +158,9 @@ local SubmitCorner = Instance.new("UICorner")
 SubmitCorner.CornerRadius = UDim.new(0, 14)
 SubmitCorner.Parent = SubmitBtn
 
+---------------------------------------------------------
+-- UI CONTROLS (DRAG & HOVER)
+---------------------------------------------------------
 local dragging, dragInput, dragStart, startPos
 local function update(input)
     local delta = input.Position - dragStart
@@ -196,18 +204,22 @@ local function AdvancedNotify(msg, color)
     local NotifyGui = Instance.new("ScreenGui", game:GetService("CoreGui"))
     local Box = Instance.new("Frame", NotifyGui)
     local Text = Instance.new("TextLabel", Box)
+    
     Box.Size = UDim2.new(0, 280, 0, 45)
     Box.Position = UDim2.new(0.5, -140, 0, -50)
     Box.BackgroundColor3 = Color3.fromRGB(12, 12, 16)
     Box.BackgroundTransparency = 0.1
+    
     local BC = Instance.new("UICorner", Box) BC.CornerRadius = UDim.new(0, 12)
     local S = Instance.new("UIStroke", Box) S.Color = color S.Thickness = 2
+    
     Text.Size = UDim2.new(1, 0, 1, 0)
     Text.BackgroundTransparency = 1
     Text.Text = msg
     Text.TextColor3 = Color3.fromRGB(255, 255, 255)
     Text.Font = Enum.Font.GothamBold
     Text.TextSize = 13
+    
     TweenService:Create(Box, TweenInfo.new(0.4, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {Position = UDim2.new(0.5, -140, 0, 40)}):Play()
     task.wait(2.5)
     TweenService:Create(Box, TweenInfo.new(0.4, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {Position = UDim2.new(0.5, -140, 0, -50)}):Play()
@@ -215,6 +227,9 @@ local function AdvancedNotify(msg, color)
     NotifyGui:Destroy()
 end
 
+---------------------------------------------------------
+-- INTERACTION & VERIFICATION
+---------------------------------------------------------
 CopyBtn.MouseButton1Click:Connect(function()
     if setclipboard then
         setclipboard(fetchedLink)
@@ -228,16 +243,34 @@ CopyBtn.MouseButton1Click:Connect(function()
 end)
 
 SubmitBtn.MouseButton1Click:Connect(function()
+    if not fetchedKey or fetchedKey == "" then
+        SubmitBtn.Text = "SERVER ERROR!"
+        SubmitBtn.BackgroundColor3 = Color3.fromRGB(150, 0, 20)
+        AdvancedNotify("Không thể kết nối tới máy chủ cấu hình GitHub!", Color3.fromRGB(255, 0, 40))
+        task.wait(2)
+        SubmitBtn.Text = "ACTIVATE SCRIPT"
+        SubmitBtn.BackgroundColor3 = Color3.fromRGB(255, 0, 40)
+        return
+    end
+
     local userKey = KeyInput.Text
+    
     if userKey == fetchedKey then
         SubmitBtn.Text = "ACCESS GRANTED!"
         SubmitBtn.BackgroundColor3 = Color3.fromRGB(0, 220, 110)
         SubmitBtn.TextColor3 = Color3.fromRGB(8, 8, 12)
-        if writefile then pcall(function() writefile(File_Name, userKey) end) end
+        
+        if writefile then
+            pcall(function()
+                writefile(File_Name, userKey)
+            end)
+        end
+        
         TweenService:Create(MainFrame, TweenInfo.new(0.4, Enum.EasingStyle.Back, Enum.EasingDirection.In), {Size = UDim2.new(0, 0, 0, 0), BackgroundTransparency = 1}):Play()
         TweenService:Create(DropShadow, TweenInfo.new(0.3), {ImageTransparency = 1}):Play()
         task.wait(0.4)
         ScreenGui:Destroy()
+        
         ExecuteMainScript()
     else
         SubmitBtn.Text = "ACCESS DENIED!"
