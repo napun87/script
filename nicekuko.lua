@@ -1,77 +1,65 @@
 --[[ 
-    PREMIUM CYBERPUNK KEY SYSTEM 2026 - OBFUSCATED & SECURED VERSION
-    Protected against basic string leaks and memory dumps.
+    PREMIUM CYBERPUNK KEY SYSTEM 2026 - AUTO SYNC & AUTO SAVE EDITION
+    Cấu hình Script: Chỉ sử dụng Key từ Server GitHub (Luarmor v4)
 ]]
 
-local _0xI = {
-    _L = function(s) 
-        local b = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
-        s = string.gsub(s, '[^'..b..'=]', '')
-        return (s:gsub('.', function(x)
-            if (x == '=') then return '' end
-            local r, f = '', (b:find(x) - 1)
-            for i = 6, 1, -1 do r = r .. (f % 2^i - f % 2^(i-1) > 0 and '1' or '0') end
-            return r;
-        end):gsub('%d%d%d%d%d%d%d%d', function(x)
-            local r = 0
-            for i = 1, 8 do r = r + (x:sub(i, i) == '1' and 2^(8-i) or 0) end
-            return string.char(r)
-        end))
-    end,
-    _X = function(d, k)
-        local out = {}
-        for i = 1, #d do
-            local k_char = string.byte(k, ((i - 1) % #k) + 1)
-            out[i] = string.char(bit32 and bit32.bxor(string.byte(d, i), k_char) or (string.byte(d, i) + k_char) % 256)
-        end
-        return table.concat(out)
-    end
-}
+local Config_URL = "https://raw.githubusercontent.com/Bubu2k/config.txt/refs/heads/main/config.txt" 
+local File_Name = "EclipseKeyCache.txt" -- Tên file lưu trữ key trong thư mục workspace
 
--- Decrypt core configurations
-local _0xC1 = _0xI._L("YUhSMWNEb3ZMM0psZDJkeWRXUnphRzl6ZEM1amIyMHZZblZpTW1zeFkyOXVabWxuTG5SM0RDNW9aV0ZreYVzYTNWeWMyOXlZMmhsYm1NdmJXRnBibVV2WTI5dVptbHlMblIz") -- Hidden GitHub Config
-local _0xFN = _0xI._L("Uldsc2FYQnpaVXRmZUV0aFkyVb") .. "v" -- Hidden Cache Filename
-local _0xDL = _0xI._L("YUhSMWNEb3ZMMlowYlc1c2FXNWpMbWx2TDNCMWZzTndkeWN=") -- Hidden Backup Link
-local _0xDK = _0xI._L("ZG1sbGRXNWhiVGM9") -- Hidden Backup Key
-
+---------------------------------------------------------
+-- HỆ THỐNG TỰ ĐỘNG TẢI DỮ LIỆU CHỦ
+---------------------------------------------------------
 local HttpService = game:GetService("HttpService")
 local TweenService = game:GetService("TweenService")
 local UserInputService = game:GetService("UserInputService")
 
-local fetchedLink = _0xI._X(_0xI._L("MzA0Czg7Og=="), "void") or _0xDL
-local fetchedKey = _0xI._X(_0xI._L("MjA0MTU3"), "void") or _0xDK
+local fetchedLink = "https://funlink.io/Pu_s2wc" -- Giữ link dự phòng để user vẫn có chỗ click
+local fetchedKey = nil -- ĐÃ XÓA KEY DỰ PHÒNG (Bắt buộc lấy từ config)
 
 local success, response = pcall(function()
-    return game:HttpGet(_0xI._X(_0xI._L("ERgXFwUQCw4eFBAXBRgCFA8ICRQQFwUYChQPDB8AChAXBRgXFwUYDQgUDB4UCRQXBRg="), "cyberpunk"))
+    return game:HttpGet(Config_URL)
 end)
 
 if success and response then
     local lines = {}
-    for line in string.gmatch(response, "[^\r\n]+") do table.insert(lines, line) end
+    for line in string.gmatch(response, "[^\r\n]+") do
+        table.insert(lines, line)
+    end
     if lines[1] then fetchedLink = string.gsub(lines[1], "%s+", "") end
     if lines[2] then fetchedKey = string.gsub(lines[2], "%s+", "") end
 end
 
+---------------------------------------------------------
+-- HÀM KÍCH HOẠT SCRIPT CHÍNH CỦA BẠN (ĐÃ CẬP NHẬT LUARMOR V4)
+---------------------------------------------------------
 local function ExecuteMainScript()
     local loadSuccess, err = pcall(function()
-        -- Hiding Luarmor API loader endpoint
-        local _0xAPI = _0xI._X(_0xI._L("EhEXBRgXFwUQCw4eFBAXBRgCFA8XAhYIDRcIDQcICRMXBRgUDBQQCBAICwUYGQgXBRgIFgYIFwgIBwUZDQgVBgUYGQg="), "vape")
-        loadstring(game:HttpGet(_0xAPI))()
+        -- Thay đổi URL nạp script chính Luarmor v4 tại đây
+        loadstring(game:HttpGet("https://api.luarmor.net/files/v4/loaders/0029513445299380a42b58b4face0eec.lua"))()
     end)
-    if not loadSuccess then warn("Error encountered during runtime optimization.") end
+    
+    if not loadSuccess then
+        warn("Lỗi Script Chính: " .. tostring(err))
+    end
 end
 
-if readfile and isfile and isfile(_0xFN) then
-    local savedKey = readfile(_0xFN)
+---------------------------------------------------------
+-- KIỂM TRA CHỨC NĂNG LƯU KEY TỰ ĐỘNG (AUTO LOGIN)
+---------------------------------------------------------
+if fetchedKey and readfile and isfile and isfile(File_Name) then
+    local savedKey = readfile(File_Name)
     if savedKey == fetchedKey then
+        -- Nếu có key server và key đã lưu trùng khớp, chạy thẳng luôn không hiện UI
         ExecuteMainScript()
         return 
     end
 end
 
--- [Đoạn mã khởi tạo GUI và logic kéo thả/hover giữ nguyên nhưng áp dụng biến mã hóa]
+---------------------------------------------------------
+-- KHỞI TẠO GIAO DIỆN CHUẨN
+---------------------------------------------------------
 local ScreenGui = Instance.new("ScreenGui")
-ScreenGui.Name = "System_Enc_v2026"
+ScreenGui.Name = "EclipseKeySystem_v3"
 ScreenGui.Parent = game:GetService("CoreGui")
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
@@ -173,6 +161,9 @@ local SubmitCorner = Instance.new("UICorner")
 SubmitCorner.CornerRadius = UDim.new(0, 14)
 SubmitCorner.Parent = SubmitBtn
 
+---------------------------------------------------------
+-- HỆ THỐNG KÉO THẢ MƯỢT MÀ
+---------------------------------------------------------
 local dragging, dragInput, dragStart, startPos
 local function update(input)
     local delta = input.Position - dragStart
@@ -200,6 +191,9 @@ UserInputService.InputChanged:Connect(function(input)
     if input == dragInput and dragging then update(input) end
 end)
 
+---------------------------------------------------------
+-- HIỆU ỨNG THÔNG BÁO & HOVER
+---------------------------------------------------------
 local function PlayHover(button, colorIn, sizeIn, colorOut, sizeOut)
     button.MouseEnter:Connect(function()
         TweenService:Create(button, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundColor3 = colorIn, Size = sizeIn}):Play()
@@ -216,18 +210,22 @@ local function AdvancedNotify(msg, color)
     local NotifyGui = Instance.new("ScreenGui", game:GetService("CoreGui"))
     local Box = Instance.new("Frame", NotifyGui)
     local Text = Instance.new("TextLabel", Box)
+    
     Box.Size = UDim2.new(0, 280, 0, 45)
     Box.Position = UDim2.new(0.5, -140, 0, -50)
     Box.BackgroundColor3 = Color3.fromRGB(12, 12, 16)
     Box.BackgroundTransparency = 0.1
+    
     local BC = Instance.new("UICorner", Box) BC.CornerRadius = UDim.new(0, 12)
     local S = Instance.new("UIStroke", Box) S.Color = color S.Thickness = 2
+    
     Text.Size = UDim2.new(1, 0, 1, 0)
     Text.BackgroundTransparency = 1
     Text.Text = msg
     Text.TextColor3 = Color3.fromRGB(255, 255, 255)
     Text.Font = Enum.Font.GothamBold
     Text.TextSize = 13
+    
     TweenService:Create(Box, TweenInfo.new(0.4, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {Position = UDim2.new(0.5, -140, 0, 40)}):Play()
     task.wait(2.5)
     TweenService:Create(Box, TweenInfo.new(0.4, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {Position = UDim2.new(0.5, -140, 0, -50)}):Play()
@@ -235,6 +233,9 @@ local function AdvancedNotify(msg, color)
     NotifyGui:Destroy()
 end
 
+---------------------------------------------------------
+-- LOGIC TƯƠNG TÁC NÚT BẤM
+---------------------------------------------------------
 CopyBtn.MouseButton1Click:Connect(function()
     if setclipboard then
         setclipboard(fetchedLink)
@@ -248,11 +249,50 @@ CopyBtn.MouseButton1Click:Connect(function()
 end)
 
 SubmitBtn.MouseButton1Click:Connect(function()
+    -- KIỂM TRA NẾU SERVER CHƯA TRẢ VỀ KEY HOẶC LỖI KẾT NỐI GITHUB
+    if not fetchedKey or fetchedKey == "" then
+        SubmitBtn.Text = "SERVER ERROR!"
+        SubmitBtn.BackgroundColor3 = Color3.fromRGB(150, 0, 20)
+        AdvancedNotify("Không thể kết nối tới máy chủ cấu hình GitHub!", Color3.fromRGB(255, 0, 40))
+        task.wait(2)
+        SubmitBtn.Text = "ACTIVATE SCRIPT"
+        SubmitBtn.BackgroundColor3 = Color3.fromRGB(255, 0, 40)
+        return
+    end
+
     local userKey = KeyInput.Text
+    
+    -- XÁC THỰC KEY CHÍNH XÁC TỪ SERVER GITHUB
     if userKey == fetchedKey then
         SubmitBtn.Text = "ACCESS GRANTED!"
         SubmitBtn.BackgroundColor3 = Color3.fromRGB(0, 220, 110)
         SubmitBtn.TextColor3 = Color3.fromRGB(8, 8, 12)
+        
+        -- TIẾN HÀNH LƯU KEY CHO LẦN SAU
+        if writefile then
+            pcall(function()
+                writefile(File_Name, userKey)
+            end)
+        end
+        
+        -- Hiệu ứng ẩn UI mượt mà
+        TweenService:Create(MainFrame, TweenInfo.new(0.4, Enum.EasingStyle.Back, Enum.EasingDirection.In), {Size = UDim2.new(0, 0, 0, 0), BackgroundTransparency = 1}):Play()
+        TweenService:Create(DropShadow, TweenInfo.new(0.3), {ImageTransparency = 1}):Play()
+        task.wait(0.4)
+        ScreenGui:Destroy()
+        
+        -- Chạy Luarmor v4 chính sau khi qua Key System của bạn
+        ExecuteMainScript()
+    else
+        SubmitBtn.Text = "ACCESS DENIED!"
+        SubmitBtn.BackgroundColor3 = Color3.fromRGB(150, 0, 20)
+        AdvancedNotify("Mã khóa không chính xác hoặc đã hết hạn!", Color3.fromRGB(255, 0, 40))
+        task.wait(2)
+        SubmitBtn.Text = "ACTIVATE SCRIPT"
+        SubmitBtn.BackgroundColor3 = Color3.fromRGB(255, 0, 40)
+    end
+end)
+SubmitBtn.TextColor3 = Color3.fromRGB(8, 8, 12)
         if writefile then pcall(function() writefile(_0xFN, userKey) end) end
         TweenService:Create(MainFrame, TweenInfo.new(0.4, Enum.EasingStyle.Back, Enum.EasingDirection.In), {Size = UDim2.new(0, 0, 0, 0), BackgroundTransparency = 1}):Play()
         TweenService:Create(DropShadow, TweenInfo.new(0.3), {ImageTransparency = 1}):Play()
