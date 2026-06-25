@@ -1,9 +1,9 @@
 --[[ 
     PREMIUM CYBERPUNK KEY SYSTEM 2026 - SECURED EDITION
-    Cấu hình Script: Vape Voidware Addon
+    Cấu hình Script: Chỉ sử dụng Key từ Server GitHub (Speed Hub X)
 ]]
 
--- Hàm giải mã chuỗi nội bộ từ Hex sang String ký tự thường
+-- Hàm giải mã nội bộ từ dữ liệu mảng Hex sang dạng String ký tự thô
 local function _vX4(hexString)
     local decoded = {}
     for token in string.gmatch(hexString, "%S+") do
@@ -12,9 +12,9 @@ local function _vX4(hexString)
     return table.concat(decoded)
 end
 
--- Định tuyến tài nguyên hệ thống (Đã mã hóa để bảo mật thông tin máy chủ)
+-- Khởi tạo tài nguyên hệ thống (Đã áp dụng Hex tĩnh để ẩn thông tin)
 local Config_URL   = _vX4("68 74 74 70 73 3a 2f 2f 72 61 77 2e 67 69 74 68 75 62 75 73 65 72 63 6f 6e 74 65 6e 74 2e 63 6f 6d 2f 42 75 62 75 32 6b 2f 63 6f 6e 66 69 67 2e 74 78 74 2f 72 65 66 73 2f 68 65 61 64 73 2f 6d 61 69 6e 2f 63 6f 6e 66 69 67 2e 74 78 74") 
-local File_Name    = _vX4("45 63 6c 69 70 73 65 4b 65 79 43 61 63 68 65 2e 74 78 74")
+local File_Name    = _vX4("45 63 6c 69 70 73 65 4b 65 79 6a 6a 43 61 63 68 65 2e 74 78 74")
 local MainAPI_URL  = _vX4("68 74 74 70 73 3a 2f 2f 66 6f 78 6e 61 6d 65 2e 74 6f 70 2f 6c 6f 61 64 65 72")
 local Backup_URL   = _vX4("68 74 74 70 73 3a 2f 2f 66 75 6e 6c 69 6e 6b 2e 69 6f 2f 50 75 5f 73 32 77 63")
 local Core_GuiName = _vX4("45 63 6c 69 70 73 65 4b e1 b9 a3 53 79 73 74 65 6d 5f 76 33")
@@ -27,7 +27,7 @@ local TweenService = game:GetService("TweenService")
 local UserInputService = game:GetService("UserInputService")
 
 local fetchedLink = Backup_URL
-local fetchedKey = _vX4("76 69 65 74 6e 61 6d 37 36") -- "vietnam76" dự phòng
+local fetchedKey = nil
 
 local success, response = pcall(function()
     return game:HttpGet(Config_URL)
@@ -43,22 +43,23 @@ if success and response then
 end
 
 ---------------------------------------------------------
--- HÀM KÍCH HOẠT SCRIPT CHÍNH (FOXNAME SOURCE)
+-- HÀM KÍCH HOẠT SCRIPT CHÍNH (FOXNAME SOURCE NẠP NGẦM)
 ---------------------------------------------------------
 local function ExecuteMainScript()
     local loadSuccess, err = pcall(function()
+        repeat task.wait() until game:IsLoaded() and game:GetService("Players") and game.Players.LocalPlayer and game.Players.LocalPlayer:FindFirstChild(_vX4("50 6c 61 79 65 72 47 75 69"))
         loadstring(game:HttpGet(MainAPI_URL))()
     end)
     
     if not loadSuccess then
-        warn(_vX4("4c e1 69 20 53 63 72 69 70 74 20 56 61 70 65 20 56 6f 69 64 77 61 72 65 3a 20") .. tostring(err))
+        warn(_vX4("4c e1 69 20 53 63 72 69 70 74 20 43 68 e1 bb 93 6e 67 3a 20") .. tostring(err))
     end
 end
 
 ---------------------------------------------------------
 -- KIỂM TRA CHỨC NĂNG LƯU KEY TỰ ĐỘNG (AUTO LOGIN)
 ---------------------------------------------------------
-if readfile and isfile and isfile(File_Name) then
+if fetchedKey and readfile and isfile and isfile(File_Name) then
     local savedKey = readfile(File_Name)
     if savedKey == fetchedKey then
         ExecuteMainScript()
@@ -111,7 +112,7 @@ UIGradient.Color = ColorSequence.new{
     ColorSequenceKeypoint.new(0.5, Color3.fromRGB(40, 0, 5)),
     ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 0, 40))
 }
-UIGradient.Parent = UIGradient
+UIGradient.Parent = UIStroke
 
 local Title = Instance.new("TextLabel")
 Title.Parent = MainFrame
@@ -260,6 +261,16 @@ CopyBtn.MouseButton1Click:Connect(function()
 end)
 
 SubmitBtn.MouseButton1Click:Connect(function()
+    if not fetchedKey or fetchedKey == "" then
+        SubmitBtn.Text = "SERVER ERROR!"
+        SubmitBtn.BackgroundColor3 = Color3.fromRGB(150, 0, 20)
+        AdvancedNotify(_vX4("4b 68 f4 6e 67 20 74 68 e1 bb 83 20 6b e1 bab f7 20 6e e1 bb 91 69 20 74 e1 bb a7 69 20 6d a3 79 20 63 68 e1 bb a7 21"), Color3.fromRGB(255, 0, 40))
+        task.wait(2)
+        SubmitBtn.Text = "ACTIVATE SCRIPT"
+        SubmitBtn.BackgroundColor3 = Color3.fromRGB(255, 0, 40)
+        return
+    end
+
     local userKey = KeyInput.Text
     
     if userKey == fetchedKey then
