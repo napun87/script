@@ -3,7 +3,7 @@
     Secured & Hex Obfuscated Version
 ]]
 
--- Hàm giải mã chuỗi nội bộ từ Hex sang String ký tự thường
+-- Hàm giải mã nội bộ từ dữ liệu mảng Hex sang dạng String ký tự thô
 local function _vX4(hexString)
     local decoded = {}
     for token in string.gmatch(hexString, "%S+") do
@@ -12,8 +12,8 @@ local function _vX4(hexString)
     return table.concat(decoded)
 end
 
--- Khởi tạo cấu hình tài nguyên hệ thống (Đã mã hóa chống quét tĩnh)
-local Config_URL   = _vX4("68 74 74 70 73 3a 2f 2f 72 61 77 2e 67 69 74 68 75 62 75 73 65 72 63 6f 6e 74 65 6e 74 2e 63 6f 6d 2f 42 75 62 75 32 6b 2f 63 6f 6e 66 69 67 2e 74 78 74 2f 72 65 66 73 2f 68 65 61 64 73 2f 6d 61 69 6e 2f 6b 65 79") 
+-- Khởi tạo tài nguyên hệ thống (Đã áp dụng Hex tĩnh để ẩn thông tin)
+local Config_URL   = _vX4("68 74 74 70 73 3a 2f 2f 72 61 77 2e 67 69 74 68 75 62 75 73 65 72 63 6f 6e 74 65 6e 74 2e 63 6f 6d 2f 42 75 62 75 32 6b 2f 63 6f 6e 66 69 67 2e 74 78 74 2f 72 65 66 73 2f 68 65 61 64 73 2f 6d 61 69 6e 2f 63 6f 6e 66 69 67 2e 74 78 74") 
 local File_Name    = _vX4("45 63 6c 69 70 73 65 4b 65 79 43 61 63 68 65 2e 74 78 74")
 local MainAPI_URL  = _vX4("68 74 74 70 73 3a 2f 2f 72 61 77 2e 67 69 74 68 75 62 75 73 65 72 63 6f 6e 74 65 6e 74 2e 63 6f 6d 2f 52 78 31 6d 2f 43 70 73 48 75 62 2f 72 65 66 73 2f 68 65 61 64 73 2f 6d 61 69 6e 2f 48 75 62")
 local Backup_URL   = _vX4("68 74 74 70 73 3a 2f 2f 66 75 6e 6c 69 6e 6b 2e 69 6f 2f 50 75 5f 73 32 77 63")
@@ -43,7 +43,7 @@ if success and response then
 end
 
 ---------------------------------------------------------
--- HÀM KÍCH HOẠT SCRIPT CHÍNH (CPSHUB RUNNER)
+-- HÀM KÍCH HOẠT SCRIPT CHÍNH (CPSHUB RUNNER CHẠY RAW)
 ---------------------------------------------------------
 local function ExecuteMainScript()
     local loadSuccess, err = pcall(function()
@@ -116,7 +116,7 @@ Title.BackgroundTransparency = 1
 
 local KeyInput = Instance.new("TextBox")
 KeyInput.Parent = MainFrame
-KeyInput.PlaceholderText = "Enter your access key..."
+KeyInput.PlaceholderText = _vX4("45 6e 74 65 72 20 79 6f 75 72 20 61 63 63 65 73 73 20 6b 65 79 2e 2e 2e")
 KeyInput.Text = ""
 KeyInput.BackgroundColor3 = Color3.fromRGB(22, 22, 28)
 KeyInput.Position = UDim2.new(0.08, 0, 0.28, 0)
@@ -213,7 +213,7 @@ local function AdvancedNotify(msg, isError)
     local Text = Instance.new("TextLabel", Box)
     
     Box.Size = UDim2.new(0, 260, 0, 40)
-    Box.Position = UDim2.new(0.5, -130, 0, -50)
+    Box.Position = UDim2.new(0.5, -140, 0, -50)
     Box.BackgroundColor3 = Color3.fromRGB(20, 20, 25)
     
     local BC = Instance.new("UICorner", Box) BC.CornerRadius = UDim.new(0, 8)
@@ -228,9 +228,9 @@ local function AdvancedNotify(msg, isError)
     Text.Font = Enum.Font.GothamMedium
     Text.TextSize = 12
     
-    TweenService:Create(Box, TweenInfo.new(0.4, Enum.EasingStyle.OutQuad), {Position = UDim2.new(0.5, -130, 0, 30)}):Play()
+    TweenService:Create(Box, TweenInfo.new(0.4, Enum.EasingStyle.OutQuad), {Position = UDim2.new(0.5, -140, 0, 30)}):Play()
     task.wait(2.2)
-    TweenService:Create(Box, TweenInfo.new(0.4, Enum.EasingStyle.InQuad), {Position = UDim2.new(0.5, -130, 0, -50)}):Play()
+    TweenService:Create(Box, TweenInfo.new(0.4, Enum.EasingStyle.InQuad), {Position = UDim2.new(0.5, -140, 0, -50)}):Play()
     task.wait(0.4)
     NotifyGui:Destroy()
 end
@@ -241,10 +241,10 @@ end
 CopyBtn.MouseButton1Click:Connect(function()
     if setclipboard then
         setclipboard(fetchedLink)
-        CopyBtn.Text = "Link Copied!"
-        AdvancedNotify("URL copied successfully.", false)
+        CopyBtn.Text = _vX4("4c 69 6e 6b 20 43 6f 70 69 65 64 21")
+        AdvancedNotify(_vX4("55 52 4c 20 63 6f 70 69 65 64 20 73 75 63 63 65 73 73 66 75 6c 6c 79 2e"), false)
     else
-        AdvancedNotify("Your executor doesn't support clipboard.", true)
+        AdvancedNotify(_vX4("59 6f 75 72 20 65 78 65 63 75 74 6f 72 20 64 6f 65 73 6e 27 74 20 73 75 70 70 6f 72 74 20 63 6c 69 70 62 6f 61 72 64 2e"), true)
     end
     task.wait(2)
     CopyBtn.Text = "Get Encryption Key"
@@ -252,10 +252,10 @@ end)
 
 SubmitBtn.MouseButton1Click:Connect(function()
     if not fetchedKey or fetchedKey == "" then
-        SubmitBtn.Text = "Server Error"
+        SubmitBtn.Text = _vX4("53 65 72 76 65 72 20 45 72 72 6f 72")
         SubmitBtn.BackgroundColor3 = Color3.fromRGB(45, 25, 25)
         SubmitBtn.TextColor3 = Color3.fromRGB(200, 60, 60)
-        AdvancedNotify("Failed to sync configuration from GitHub.", true)
+        AdvancedNotify(_vX4("46 61 69 6c 65 64 20 74 6f 20 73 79 6e 63 20 63 6f 6e 66 69 67 75 72 61 74 69 6f 6e 20 66 72 6f 6d 20 47 69 74 48 75 62 2e"), true)
         task.wait(2)
         SubmitBtn.Text = "Verify & Access"
         SubmitBtn.BackgroundColor3 = Color3.fromRGB(240, 240, 245)
@@ -266,7 +266,7 @@ SubmitBtn.MouseButton1Click:Connect(function()
     local userKey = KeyInput.Text
     
     if userKey == fetchedKey then
-        SubmitBtn.Text = "Authorized"
+        SubmitBtn.Text = _vX4("41 75 74 68 6f 72 69 7a 65 64")
         SubmitBtn.BackgroundColor3 = Color3.fromRGB(25, 45, 30)
         SubmitBtn.TextColor3 = Color3.fromRGB(60, 200, 100)
         
@@ -281,10 +281,10 @@ SubmitBtn.MouseButton1Click:Connect(function()
         
         ExecuteMainScript()
     else
-        SubmitBtn.Text = "Access Denied"
+        SubmitBtn.Text = _vX4("41 63 63 65 73 73 20 44 e1 b9 a3 6e 69 65 64")
         SubmitBtn.BackgroundColor3 = Color3.fromRGB(45, 25, 25)
         SubmitBtn.TextColor3 = Color3.fromRGB(200, 60, 60)
-        AdvancedNotify("Invalid or expired access token.", true)
+        AdvancedNotify(_vX4("49 6e 76 61 6c 69 64 20 6f 72 20 65 78 70 69 72 65 64 20 61 63 63 65 73 73 20 74 6f 6b 65 6e 2e"), true)
         task.wait(2)
         SubmitBtn.Text = "Verify & Access"
         SubmitBtn.BackgroundColor3 = Color3.fromRGB(240, 240, 245)
