@@ -1,1 +1,1 @@
-loadstring(game:HttpGet("https://raw.githubusercontent.com/Solvexxxx/Scripts/refs/heads/main/SolvexGUI99nights.lua"))()
+loadstring(game:HttpGet("https://robloxscriptbest.com/script/loader.php?script=99night"))()
